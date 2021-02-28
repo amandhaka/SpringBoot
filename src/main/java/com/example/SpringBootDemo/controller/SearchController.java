@@ -14,7 +14,7 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @PostMapping("/search")
+    @PostMapping(path = "/search")
     public SearchResponseDto getProducts(@RequestBody SearchRequestDto searchRequestDto){
         return searchService.getProducts(searchRequestDto);
     }

@@ -2,7 +2,7 @@ package com.example.SpringBootDemo.dto;
 
 public class ProductDto {
     private String name;
-    private boolean isInsStock;
+    private boolean isInStock;
     private String description;
 
     public String getName() {
@@ -13,12 +13,12 @@ public class ProductDto {
         this.name = name;
     }
 
-    public boolean isInsStock() {
-        return isInsStock;
+    public boolean isInStock() {
+        return isInStock;
     }
 
-    public void setInsStock(boolean insStock) {
-        isInsStock = insStock;
+    public void setInStock(boolean insStock) {
+        isInStock = insStock;
     }
 
     public String getDescription() {
