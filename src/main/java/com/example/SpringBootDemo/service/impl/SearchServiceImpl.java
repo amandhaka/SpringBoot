@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +20,20 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponseDto getProducts(SearchRequestDto searchRequestDto){
-        Map<String,Object> productResponse = searchClient.getProducts(searchRequestDto.getSearchTerm());
-        System.out.println(searchRequestDto.getSearchTerm());
-        System.out.println(productResponse);
+        String searchTerm = searchRequestDto.getSearchTerm();
+        String locationSearch = "stockLocation: "+searchRequestDto.getLocation();
+        SearchResponseDto responseDto = new SearchResponseDto();
+        List<ProductDto> productDtoList = getProductsBasedOnQuery(searchTerm);
+        List<ProductDto> productDtoListLocation = getProductsBasedOnQuery(locationSearch);
+        responseDto.setProducts(productDtoList);
+        responseDto.setLocationProducts(productDtoListLocation);
+        return responseDto;
+    }
+
+    public List<ProductDto> getProductsBasedOnQuery(String query){
+
+        Map<String,Object> productResponse = searchClient.getProducts(query);
+
         Map<String,Object> responseObject = (Map<String,Object>) (productResponse.get("response"));
         List<Map<String,Object>> products = (List<Map<String,Object>>) responseObject.get("docs");
         List<ProductDto> productDtoList = new ArrayList<>();
@@ -39,8 +49,6 @@ public class SearchServiceImpl implements SearchService {
             product.setDescription((String)productClientResponse.get("description"));
             productDtoList.add(product);
         }
-        SearchResponseDto responseDto = new SearchResponseDto();
-        responseDto.setProducts(productDtoList);
-        return responseDto;
+        return productDtoList;
     }
 }
